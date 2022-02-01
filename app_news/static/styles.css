@@ -1,0 +1,44 @@
+.main-menu {
+    display: flex;
+    margin: 10px 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+.main-menu-item:not(:last-child) {
+    margin-right: 10px;
+}
+
+.deactivated-news {
+    color: red;
+}
+
+.news-content {
+    padding: 15px 0;
+}
+
+.comments-heading {
+    padding-top: 15px;
+    border-top: solid 3px #000;
+}
+
+.comment {
+    padding: 10px 0;
+}
+
+.comment:not(:last-child) {
+    border-bottom: solid 1px #000;
+}
+
+.comment-message {
+    padding-top: 5px;
+    padding-left: 15px;
+}
+
+.edit-news {
+    margin-bottom: 10px;
+}
+
+.login-logout {
+    margin-bottom: 15px;
+}

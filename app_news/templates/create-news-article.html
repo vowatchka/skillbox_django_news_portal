@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Создать новость</title>
+
+  {% include '_styles.html' %}
+</head>
+<body>
+  {% include '_auth.html' %}
+  {% include '_back.html' %}
+
+  <h1>Создать новость</h1>
+  <form method="post" action="{% url 'create_news_article' %}">
+    {% csrf_token %}
+
+    {% for field in form %}
+      <p>
+        {{field.label_tag}} {{field}}
+      </p>
+    {% endfor %}
+
+    <button>Создать</button>
+  </form>
+</body>
+</html>

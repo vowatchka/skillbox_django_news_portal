@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>{{news_article_detail.title}}</title>
+
+  {% include '_styles.html' %}
+</head>
+<body>
+  {% include '_public_auth.html' %}
+  {% include '_main-menu.html' %}
+
+  {% if not news_article_detail.activated %}
+    <div class="deactivated-news">Не опубликована</div>
+  {% endif %}
+  <h1>{{news_article_detail.title}}</h1>
+
+  <div class="edit-news"><small>
+    {% if perms.app_news.change_newsarticle %}
+    <a href="{% url 'edit_news_article' news_article_detail.id %}" title="Редактировать">Редактировать</a>
+    {% endif %}
+
+    {% if perms.app_news.delete_newsarticle %}
+     | <a href="{% url 'delete_news_article' news_article_detail.id %}" title="Удалить">Удалить</a>
+    {% endif %}
+  </small></div>
+
+  <div>Новость от {{news_article_detail.created_date|date:'d.m.Y'}}</div>
+  <div>Последнее изменение {{news_article_detail.edit_date|date:'d.m.Y H:i:s'}}</div>
+  <div>
+    Тэги: {% for tag in news_article_detail.tag.all %}
+    <a href="{% url 'news_article_list' %}?tag={{tag.name|slice:'1:'}}">{{tag.name}}</a>&nbsp;
+    {% endfor %}
+  </div>
+
+  <div class="news-content">
+    {{news_article_detail.content}}
+  </div>
+
+  <div class="comments-heading">Комментарии ({{comments.count}})</div>
+
+  <div>
+    <form method="post" action="{% url 'news_article_detail' news_article_detail.id %}">
+      {% csrf_token %}
+
+      <p>
+        {% if request.user.is_authenticated %}
+          <input type="hidden" name="{{comment_form.user.html_name}}" value="{{request.user.id}}" />
+          <input type="hidden" name="{{comment_form.user_name.html_name}}" value="{{request.user.username}}" />
+        {% else %}
+          {{comment_form.user_name.errors}}
+          {{comment_form.user_name.label_tag}} {{comment_form.user_name}}
+        {% endif %}
+      </p>
+
+      <p>
+        {{comment_form.message.errors}}
+        {{comment_form.message.label_tag}} {{comment_form.message}}
+      </p>
+
+      <button>Добавить</button>
+    </form>
+  </div>
+
+  <ul style="list-style:none; padding-left:0;">
+    {% for comment in comments %}
+    <li class="comment">
+      <div>Прокомментировано: {{comment.user_name}} | {{comment.comment_date|date:'d.m.Y H:i:s'}}</div>
+      <div class="comment-message">{{comment.message}}</div>
+
+      {% if perms.app_news.delete_comment %}
+      <div><small>
+        <a href="{% url 'delete_comment' comment.id %}" title="Удалить">Удалить</a>
+      </small></div>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

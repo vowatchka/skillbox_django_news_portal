@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Профиль пользователя</title>
+
+  {% include '_styles.html' %}
+</head>
+<body>
+  {% include '_auth.html' %}
+
+  <h1>Профиль пользователя</h1>
+  <b>Логин:</b> {{profile.user.username}}<br>
+  <b>Имя:</b> {{profile.user.first_name}}<br>
+  <b>Фамилия:</b> {{profile.user.last_name}}<br>
+  <b>Город:</b> {{profile.city}}
+
+  <div style="padding: 5px 0;"></div>
+
+  <b>Телефон:</b> {{profile.tel}}<br>
+  <b>Email:</b> {{profile.user.email}}<br>
+
+  <div style="padding: 5px 0;"></div>
+  <b>Кол-во опубликованных новостей:</b> {{profile.published_news_count}}<br>
+
+</body>
+</html>

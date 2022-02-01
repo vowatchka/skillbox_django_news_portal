@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Редактировать новость</title>
+
+  {% include '_styles.html' %}
+</head>
+<body>
+  {% include '_auth.html' %}
+  {% include '_back.html' %}
+
+  <h1>Редактировать новость</h1>
+
+  <form method="post" actiond="{% url 'edit_news_article' news_id %}">
+    {% csrf_token %}
+    <input type="hidden" name="return_uri" value="{{return_uri}}">
+    {{form.as_p}}
+    <button>Сохранить</button>
+  </form>
+</body>
+</html>

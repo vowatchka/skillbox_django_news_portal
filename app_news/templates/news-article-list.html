@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Новости</title>
+
+  {% include '_styles.html' %}
+</head>
+<body>
+  {% include '_public_auth.html' %}
+
+  <h1>Новости</h1>
+
+  {% if perms.app_news.add_newsarticle and perms.app_news.publish %}
+  <div>
+    <a href="{% url 'create_news_article' %}" title="Добавить новость">Добавить новость</a>
+  </div>
+  {% endif %}
+
+  <ul>
+  {% for news in news_article_list %}
+    <li>
+      <h3><a href="{% url 'news_article_detail' news.id %}" title="{{news_title}}">{{news.title}}</a></h3>
+      <div>{{news.short_description}}</div>
+      <div><small>Новость от {{news.created_date|date:'d.m.Y'}}</small></div>
+      <div><small>Количество комментариев: {{news.comments_count}}</small></div>
+      <div><small>
+        Тэги: {% for tag in news.tag.all %}
+        <a href="{% url 'news_article_list' %}?tag={{tag.name|slice:'1:'}}">{{tag.name}}</a>&nbsp;
+        {% endfor %}
+      </small></div>
+
+      <div><small>
+        {% if perms.app_news.change_newsarticle %}
+        <a href="{% url 'edit_news_article' news.id %}" title="Редактировать">Редактировать</a>
+        {% endif %}
+
+        {% if perms.app_news.delete_newsarticle %}
+         | <a href="{% url 'delete_news_article' news.id %}" title="Удалить">Удалить</a>
+        {% endif %}
+      </small></div>
+    </li>
+  {% endfor %}
+  </ul>
+</body>
+</html>
